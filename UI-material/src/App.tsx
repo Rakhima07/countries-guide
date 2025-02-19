@@ -1,12 +1,15 @@
-
 import './App.css';
-import {useEffect, useState} from 'react';
-import {IShortCountry} from './types.ts';
-import {BASE_URL} from './constants.ts';
+import { useEffect, useState } from 'react';
+import { IShortCountry } from './types.ts';
+import { BASE_URL } from './constants.ts';
 import CountriesList from './components/CountriesList/ContriesList.tsx';
+import CountryInfo from './components/CountryInfo/CountryInfo.tsx';
+import { Button } from '@mui/material';
 
 function App() {
   const [countries, setCountries] = useState<IShortCountry[]>([]);
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const getCountries = async () => {
@@ -16,18 +19,36 @@ function App() {
           throw new Error(`Ошибка: ${response.status}`);
         }
         const data: IShortCountry[] = await response.json();
-        setCountries(data)
+        setCountries(data);
       } catch (error) {
         console.error('Ошибка запроса:', error);
-        return [];
       }
     };
-    void getCountries()
+
+    getCountries();
   }, []);
 
   return (
     <div>
-     <CountriesList countries={countries}/>
+      <Button variant="contained" onClick={() => setIsDrawerOpen(true)}>
+        Выбрать страну
+      </Button>
+
+      <CountriesList
+        countries={countries}
+        open={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        onSelectCountry={(code) => {
+          setSelectedCountry(code);
+          setIsDrawerOpen(false); // Закрываем список после выбора страны
+        }}
+      />
+
+      {selectedCountry ? (
+        <CountryInfo shortName={selectedCountry} />
+      ) : (
+        <p>Выберите страну</p>
+      )}
     </div>
   );
 }

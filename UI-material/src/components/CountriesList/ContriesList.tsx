@@ -1,28 +1,32 @@
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import {IShortCountry} from '../../types.ts';
+import { Box, Drawer, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import { IShortCountry } from '../../types.ts';
 
 interface Props {
   countries: IShortCountry[];
+  open: boolean;
+  onClose: () => void;
+  onSelectCountry: (code: string) => void;
 }
 
-export default function CountriesList({countries}: Props) {
-  const DrawerList = (
-    <Box sx={{width: 350}} role="presentation">
-      <List>
-        {countries.map((country) => (
-          <p key={country.alpha3Code}>
-            {country.name}
-          </p>
-        ))}
-      </List>
-    </Box>
-  );
-
+export default function CountriesList({ countries, open, onClose, onSelectCountry }: Props) {
   return (
-    <Drawer open>
-      {DrawerList}
+    <Drawer open={open} onClose={onClose}>
+      <Box sx={{ width: 350 }} role="presentation">
+        <List>
+          {countries.map((country) => (
+            <ListItem key={country.alpha3Code} disablePadding>
+              <ListItemButton
+                onClick={() => {
+                  onSelectCountry(country.alpha3Code);
+                  onClose(); // Закрываем Drawer при выборе страны
+                }}
+              >
+                <ListItemText primary={country.name} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
     </Drawer>
   );
 }
