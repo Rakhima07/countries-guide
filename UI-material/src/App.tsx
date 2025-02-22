@@ -40,7 +40,7 @@ function App() {
         onClose={() => setIsDrawerOpen(false)}
         onSelectCountry={(code) => {
           setSelectedCountry(code);
-          setIsDrawerOpen(false); // Закрываем список после выбора страны
+          setIsDrawerOpen(false); 
         }}
       />
 
