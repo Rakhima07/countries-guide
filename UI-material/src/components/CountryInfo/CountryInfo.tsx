@@ -27,7 +27,7 @@ const CountryInfo = ({ shortName }: Props) => {
           (data.borders || []).map(async (border) => {
             const response = await fetch(`${BASE_URL}/alpha/${border}`);
             if (!response.ok) {
-              return border; // Если запрос не удался, оставляем код страны
+              return border; 
             }
             const borderData: IFullCountry = await response.json();
             return borderData.name;
