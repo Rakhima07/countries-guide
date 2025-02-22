@@ -18,7 +18,7 @@ export default function CountriesList({ countries, open, onClose, onSelectCountr
               <ListItemButton
                 onClick={() => {
                   onSelectCountry(country.alpha3Code);
-                  onClose(); // Закрываем Drawer при выборе страны
+                  onClose(); 
                 }}
               >
                 <ListItemText primary={country.name} />
